@@ -1,11 +1,7 @@
 package BO;
 
-/**
- *
- * @author Anas
- */
-public class Damage extends OperationOnProduct {
-    //jhhgh
+public class Damage extends OperationOnProduct implements Cloneable {
+
     private String cause;
 
     public String getCause() {
@@ -14,5 +10,10 @@ public class Damage extends OperationOnProduct {
 
     public void setCause(String cause) {
         this.cause = cause;
+    }
+
+    @Override
+    public Damage clone() throws CloneNotSupportedException {
+        return (Damage) super.clone();
     }
 }

@@ -1,7 +1,8 @@
 package BO;
 
 
-public class Purchase extends OperationOnProduct {
+
+public class Purchase extends OperationOnProduct implements Cloneable {
 
     private String vendorName;
     private double totalAmount;
@@ -20,5 +21,10 @@ public class Purchase extends OperationOnProduct {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    @Override
+    public Purchase clone() throws CloneNotSupportedException {
+        return (Purchase) super.clone();
     }
 }

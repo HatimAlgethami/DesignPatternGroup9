@@ -2,12 +2,8 @@ package BO;
 
 import com.toedter.calendar.JDateChooser;
 
-/**
- *
- * @author Anas
- */
-public class OperationOnProduct {
-    
+public class OperationOnProduct implements Cloneable {
+
     private Product product;
     private JDateChooser jDateChooser;
     private int transactionQuantity;
@@ -34,5 +30,12 @@ public class OperationOnProduct {
 
     public void setTransactionQuantity(int transactionQuantity) {
         this.transactionQuantity = transactionQuantity;
+    }
+
+    @Override
+    public OperationOnProduct clone() throws CloneNotSupportedException {
+        OperationOnProduct cloned = (OperationOnProduct) super.clone();
+        
+        return cloned;
     }
 }

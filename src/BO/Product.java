@@ -1,10 +1,6 @@
 package BO;
 
-/**
- *
- * @author Anas
- */
-public class Product {
+public class Product implements Cloneable {
 
     private String name, code;
     private int totalQuantity, reorderLevel;
@@ -46,6 +42,8 @@ public class Product {
         return name + " || Code: " + code + " Qty: " + totalQuantity;
     }
 
-    public Product() {
+    @Override
+    public Product clone() throws CloneNotSupportedException {
+        return (Product) super.clone();
     }
 }
