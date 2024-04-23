@@ -1,9 +1,6 @@
 package BO;
 
-/**
- *
- * @author Anas
- */
+
 public class Purchase extends OperationOnProduct {
 
     private String vendorName;
