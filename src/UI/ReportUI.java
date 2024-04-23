@@ -152,7 +152,9 @@ public class ReportUI extends javax.swing.JFrame {
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
         // TODO add your handling code here:
         setVisibilityOfTotalAmountTextBoxes(true);
-        List<Purchase> purchaseListOfADate = Shop.getShop().getPurchaseOfADate(jDateChooser1);
+        //List<Purchase> purchaseListOfADate = Shop.getShop().getPurchaseOfADate(jDateChooser1);
+        List<Purchase> purchaseListOfADate = Shop.getInstance().getPurchaseOfADate(jDateChooser1);
+
         jTextArea1.setText("");
         String format = "%s\t\t%s\t\t%s\t\t%s\t\t%s\n";
         jTextArea1.append(String.format(format, "Name", "Code", "Purchase Qty", "Amount", "Vendor"));
@@ -169,7 +171,8 @@ public class ReportUI extends javax.swing.JFrame {
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         // TODO add your handling code here:
         setVisibilityOfTotalAmountTextBoxes(true);
-        List<Sale> salesListOfADate = Shop.getShop().getSalesOfADate(jDateChooser1);
+        //List<Sale> salesListOfADate = Shop.getShop().getSalesOfADate(jDateChooser1);
+        List<Sale> salesListOfADate = Shop.getInstance().getSalesOfADate(jDateChooser1);
         jTextArea1.setText("");
         String format = "%s\t\t%s\t\t%s\t\t%s\n";
         jTextArea1.append(String.format(format, "Name", "Code", "Sale Qty", "Amount"));
@@ -186,7 +189,8 @@ public class ReportUI extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
         setVisibilityOfTotalAmountTextBoxes(false);
-        List<Damage> damageListOfADate = Shop.getShop().getDamageOfADate(jDateChooser1);
+        //List<Damage> damageListOfADate = Shop.getShop().getDamageOfADate(jDateChooser1);
+        List<Damage> damageListOfADate = Shop.getInstance().getDamageOfADate(jDateChooser1);
         jTextArea1.setText("");
         String format = "%s\t\t%s\t\t%s\t\t%s\n";
         jTextArea1.append(String.format(format, "Name", "Code", "Damage Qty", "Cause"));

@@ -64,7 +64,7 @@ public class ProductSetupAndViewStockUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(54, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +190,8 @@ public class ProductSetupAndViewStockUI extends javax.swing.JFrame {
             jTextField3.setText("");
             jTextField4.setText("");
 
-            String message = Shop.getShop().enlistProduct(aProduct);
+            String message = Shop.getInstance().enlistProduct(aProduct);
+            //String message = Shop.getShop().enlistProduct(aProduct);
             JOptionPane.showMessageDialog(null,
                     message,
                     "SUCCESS!",
@@ -228,9 +229,15 @@ public class ProductSetupAndViewStockUI extends javax.swing.JFrame {
         String format = "%s\t\t%s\t\t%s\t\t%s\n";
         productListBox.append(String.format(format, "Name", "Code", "Quantity", "Reorder Level"));
 
+        for (Product aProduct : Shop.getInstance().getProductList()) {
+    productListBox.append(String.format(format, aProduct.getName(), aProduct.getCode(), aProduct.getTotalQuantity(), aProduct.getReorderLevel()));
+}
+
+        /*
         for (Product aProduct : Shop.getShop().getProductList()) {
             productListBox.append(String.format(format, aProduct.getName(), aProduct.getCode(), aProduct.getTotalQuantity(), aProduct.getReorderLevel()));
         }
+*/
     }
 
     public void showShortageProducts() {
@@ -238,11 +245,18 @@ public class ProductSetupAndViewStockUI extends javax.swing.JFrame {
         String format = "%s\t\t%s\t\t%s\t\t%s\n";
         productListBox.append(String.format(format, "Name", "Code", "Quantity", "Reorder Level"));
 
+        for (Product aProduct : Shop.getInstance().getProductList()) {
+    if (aProduct.getTotalQuantity() < aProduct.getReorderLevel()) {
+        productListBox.append(String.format(format, aProduct.getName(), aProduct.getCode(), aProduct.getTotalQuantity(), aProduct.getReorderLevel()));
+    }
+}
+
+        /*
         for (Product aProduct : Shop.getShop().getProductList()) {
             if (aProduct.getTotalQuantity() < aProduct.getReorderLevel()) {
                 productListBox.append(String.format(format, aProduct.getName(), aProduct.getCode(), aProduct.getTotalQuantity(), aProduct.getReorderLevel()));
             }
-        }
+        }*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

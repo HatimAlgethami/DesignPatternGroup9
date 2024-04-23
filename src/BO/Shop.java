@@ -1,19 +1,35 @@
 package BO;
 
 import java.util.ArrayList;
-import com.toedter.calendar.JDateChooser;
 import java.util.List;
+import com.toedter.calendar.JDateChooser;
 
-/**
- *
- * @author Anas
- */
 public class Shop {
 
     private List<Product> productList;
     private List<Purchase> purchaseList;
     private List<Sale> salesList;
     private List<Damage> damageList;
+
+    private static Shop instance;
+
+    private Shop() {
+        productList = new ArrayList<Product>();
+        purchaseList = new ArrayList<Purchase>();
+        salesList = new ArrayList<Sale>();
+        damageList = new ArrayList<Damage>();
+    }
+
+    public static Shop getInstance() {
+        if (instance == null) {
+            synchronized (Shop.class) {
+                if (instance == null) {
+                    instance = new Shop();
+                }
+            }
+        }
+        return instance;
+    }
 
     public List<Product> getProductList() {
         return productList;
@@ -47,29 +63,6 @@ public class Shop {
         this.damageList = damageList;
     }
 
-    public Shop() {
-        productList = new ArrayList<Product>();
-        purchaseList = new ArrayList<Purchase>();
-        salesList = new ArrayList<Sale>();
-        damageList = new ArrayList<Damage>();
-    }
-
-    private static Shop aShop;
-
-    public static Shop getShop() {
-        if (aShop == null) {
-            aShop = new Shop();
-        }
-
-        return aShop;
-    }
-
-    public static Shop getShop(List<Product> seedProducts) {
-        Shop shop = getShop();
-        shop.productList = seedProducts;
-        return shop;
-    }
-
     public String enlistProduct(Product aProduct) {
         for (Product product1 : productList) {
             if (product1.getCode() == aProduct.getCode()) {
@@ -93,7 +86,7 @@ public class Shop {
                 }
             }
         }
-        
+
         salesList.add(aSale);
         return "Sale has been updated.";
     }
@@ -104,7 +97,7 @@ public class Shop {
                 aProduct.setTotalQuantity(aProduct.getTotalQuantity() + aPurchase.getTransactionQuantity());
             }
         }
-        
+
         purchaseList.add(aPurchase);
         return "Purchase has been updated.";
     }

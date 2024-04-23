@@ -159,26 +159,39 @@ public class DamageEntryUI extends javax.swing.JFrame {
 
         aDamage.setOperationDate(jDateChooser1);
 
-        if (aDamage.getProduct() != null) {
-            String msg = Shop.getShop().addDamage(aDamage);
-            populateProductListComboBox();
-            JOptionPane.showMessageDialog(null,
-                    msg,
-                    "BINGO!",
-                    JOptionPane.PLAIN_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "Please select the product.",
-                    "ERROR!",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        // Get the instance of Shop using the Singleton pattern
+Shop shop = Shop.getInstance();
+
+// Check if aDamage has a valid product
+if (aDamage.getProduct() != null) {
+    // Add the damage to the Shop instance
+    String msg = shop.addDamage(aDamage);
+    
+    // Update the product list combo box
+    populateProductListComboBox();
+    
+    // Show a success message
+    JOptionPane.showMessageDialog(null,
+            msg,
+            "BINGO!",
+            JOptionPane.PLAIN_MESSAGE);
+} else {
+    // Show an error message if the product is not selected
+    JOptionPane.showMessageDialog(null,
+            "Please select the product.",
+            "ERROR!",
+            JOptionPane.ERROR_MESSAGE);
+}
+
     }//GEN-LAST:event_jButton1MouseClicked
 
     public void populateProductListComboBox() {
-        for (Product aProduct : Shop.getShop().getProductList()) {
-            jComboBox1.addItem(aProduct);
-        }
+    Shop shop = Shop.getInstance();
+    for (Product aProduct : shop.getProductList()) {
+        jComboBox1.addItem(aProduct);
     }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

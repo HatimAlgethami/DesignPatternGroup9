@@ -175,7 +175,22 @@ public class PurchaseUI extends javax.swing.JFrame {
 
         aPurchase.setOperationDate(jDateChooser1);
         aPurchase.setVendorName(jTextField2.getText());
+        
+        if (aPurchase.getProduct() != null) {
+    String msg = Shop.getInstance().addPurchase(aPurchase);
+    populateProductListComboBox();
+    JOptionPane.showMessageDialog(null,
+            msg,
+            "BINGO!",
+            JOptionPane.PLAIN_MESSAGE);
+} else {
+    JOptionPane.showMessageDialog(null,
+            "Please select the product.",
+            "ERROR!",
+            JOptionPane.ERROR_MESSAGE);
+}
 
+/*
         if (aPurchase.getProduct() != null) {
             String msg = Shop.getShop().addPurchase(aPurchase);
             populateProductListComboBox();
@@ -189,13 +204,21 @@ public class PurchaseUI extends javax.swing.JFrame {
                     "ERROR!",
                     JOptionPane.ERROR_MESSAGE);
         }
+        */
     }//GEN-LAST:event_jButton1MouseClicked
-
+/*
     public void populateProductListComboBox() {
         for (Product aProduct : Shop.getShop().getProductList()) {
             jComboBox1.addItem(aProduct);
         }
     }
+    */
+    public void populateProductListComboBox() {
+    for (Product aProduct : Shop.getInstance().getProductList()) {
+        jComboBox1.addItem(aProduct);
+    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

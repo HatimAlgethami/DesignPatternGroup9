@@ -164,26 +164,30 @@ public class SellUI extends javax.swing.JFrame {
 
         aSale.setOperationDate(jDateChooser1);
 
-        if (aSale.getProduct() != null) {
-            String msg = Shop.getShop().addSale(aSale);
-            populateProductListComboBox();
-            JOptionPane.showMessageDialog(null,
-                    msg,
-                    "BINGO!",
-                    JOptionPane.PLAIN_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "Please select the product.",
-                    "ERROR!",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+         Shop shop = Shop.getInstance();
+
+    if (aSale.getProduct() != null) {
+        String msg = shop.addSale(aSale);
+        populateProductListComboBox();
+        JOptionPane.showMessageDialog(null, msg, "BINGO!", JOptionPane.PLAIN_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select the product.", "ERROR!", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1MouseClicked
 
     public void populateProductListComboBox() {
-        for (Product aProduct : Shop.getShop().getProductList()) {
-            jComboBox1.addItem(aProduct);
-        }
+    // Get the instance of Shop using the Singleton pattern
+    Shop shop = Shop.getInstance();
+
+    // Clear existing items in the combo box
+    jComboBox1.removeAllItems();
+
+    // Add products from the Shop's product list to the combo box
+    for (Product aProduct : shop.getProductList()) {
+        jComboBox1.addItem(aProduct);
     }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
