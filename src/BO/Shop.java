@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import com.toedter.calendar.JDateChooser;
 
-public class Shop implements Cloneable {
-
+public class Shop implements IShop, Cloneable {
     private List<Product> productList;
     private List<Purchase> purchaseList;
     private List<Sale> salesList;
     private List<Damage> damageList;
-
     private static Shop instance;
 
     private Shop() {
-        productList = new ArrayList<Product>();
-        purchaseList = new ArrayList<Purchase>();
-        salesList = new ArrayList<Sale>();
-        damageList = new ArrayList<Damage>();
+        productList = new ArrayList<>();
+        purchaseList = new ArrayList<>();
+        salesList = new ArrayList<>();
+        damageList = new ArrayList<>();
     }
-      // Phase 1 - Singleton
+
     public static Shop getInstance() {
         if (instance == null) {
             synchronized (Shop.class) {
@@ -31,38 +29,12 @@ public class Shop implements Cloneable {
         return instance;
     }
 
+    @Override
     public List<Product> getProductList() {
         return productList;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
-
-    public List<Purchase> getPurchaseList() {
-        return purchaseList;
-    }
-
-    public void setPurchaseList(List<Purchase> purchaseList) {
-        this.purchaseList = purchaseList;
-    }
-
-    public List<Sale> getSalesList() {
-        return salesList;
-    }
-
-    public void setSalesList(List<Sale> salesList) {
-        this.salesList = salesList;
-    }
-
-    public List<Damage> getDamageList() {
-        return damageList;
-    }
-
-    public void setDamageList(List<Damage> damageList) {
-        this.damageList = damageList;
-    }
-
+    @Override
     public String enlistProduct(Product aProduct) {
         for (Product product1 : productList) {
             if (product1.getCode().equals(aProduct.getCode())) {
@@ -76,6 +48,7 @@ public class Shop implements Cloneable {
         return "Product is enlisted.";
     }
 
+    @Override
     public String addSale(Sale aSale) {
         for (Product aProduct : productList) {
             if (aProduct.getCode().equals(aSale.getProduct().getCode())) {
@@ -91,6 +64,7 @@ public class Shop implements Cloneable {
         return "Sale has been updated.";
     }
 
+    @Override
     public String addPurchase(Purchase aPurchase) {
         for (Product aProduct : productList) {
             if (aProduct.getCode().equals(aPurchase.getProduct().getCode())) {
@@ -102,6 +76,7 @@ public class Shop implements Cloneable {
         return "Purchase has been updated.";
     }
 
+    @Override
     public String addDamage(Damage aDamage) {
         for (Product aProduct : productList) {
             if (aProduct.getCode().equals(aDamage.getProduct().getCode())) {
@@ -115,7 +90,7 @@ public class Shop implements Cloneable {
         damageList.add(aDamage);
         return "Damage has been updated.";
     }
-
+    
     public List<Sale> getSalesOfADate(JDateChooser jDateChooser) {
         List<Sale> salesOfADate = new ArrayList<Sale>();
         for (Sale aSale : salesList) {

@@ -1,5 +1,9 @@
 package UI;
 
+import BO.ConsoleLogger;
+import BO.ILogger;
+import BO.IShop;
+import BO.LoggerDecorator;
 import BO.Product;
 import BO.Purchase;
 import BO.Shop;
@@ -12,15 +16,22 @@ import javax.swing.JOptionPane;
  * @author Anas
  */
 public class PurchaseUI extends javax.swing.JFrame {
-
+    private ILogger logger;
+    private IShop shopWithLogger;
     /**
      * Creates new form PurchaseUI
      */
     public PurchaseUI() {
         initComponents();
+        initializeLogger();
         populateProductListComboBox();
     }
+    private void initializeLogger() {
+        logger = new ConsoleLogger();
 
+        IShop shop = Shop.getInstance();
+        shopWithLogger = new LoggerDecorator(shop, logger);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,12 +171,14 @@ public class PurchaseUI extends javax.swing.JFrame {
             aPurchase.setTransactionQuantity(transactionQuantity);
             aPurchase.setTotalAmount(totalAmount);
         } catch (MyException e) {
+            logger.log(e.getMessage());
             JOptionPane.showMessageDialog(null,
                     e.getMessage(),
                     "FAILED!",
                     JOptionPane.ERROR_MESSAGE);
             return;
         } catch (Exception e) {
+            logger.log("Error occurred: " + e.getMessage());
             JOptionPane.showMessageDialog(null,
                     "Please enter data in right format.",
                     "ERROR!",
@@ -174,10 +187,12 @@ public class PurchaseUI extends javax.swing.JFrame {
         }
 
         aPurchase.setOperationDate(jDateChooser1);
+        //aPurchase.setOperationDate(jDateChooser1);
         aPurchase.setVendorName(jTextField2.getText());
         
         if (aPurchase.getProduct() != null) {
-    String msg = Shop.getInstance().addPurchase(aPurchase);
+    String msg = shopWithLogger.addPurchase(aPurchase);
+    logger.log(msg);
     populateProductListComboBox();
     JOptionPane.showMessageDialog(null,
             msg,

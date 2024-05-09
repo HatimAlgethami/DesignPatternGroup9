@@ -1,6 +1,10 @@
 package UI;
 
+import BO.ConsoleLogger;
 import BO.Damage;
+import BO.ILogger;
+import BO.IShop;
+import BO.LoggerDecorator;
 import BO.Product;
 import BO.Shop;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -12,15 +16,22 @@ import javax.swing.JOptionPane;
  * @author Anas
  */
 public class DamageEntryUI extends javax.swing.JFrame {
-
+    private ILogger logger;
+    private IShop shopWithLogger;
     /**
      * Creates new form DamageEntryUI
      */
     public DamageEntryUI() {
         initComponents();
+        initializeLogger();
         populateProductListComboBox();
     }
+    private void initializeLogger() {
+        logger = new ConsoleLogger();
 
+        IShop shop = Shop.getInstance();
+        shopWithLogger = new LoggerDecorator(shop, logger);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -132,6 +143,7 @@ public class DamageEntryUI extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
+
         Damage aDamage = new Damage();
         aDamage.setProduct((Product) jComboBox1.getSelectedItem());
 
@@ -144,12 +156,14 @@ public class DamageEntryUI extends javax.swing.JFrame {
             aDamage.setTransactionQuantity(transactionQuantity);
             aDamage.setCause(jTextField2.getText());
         } catch (MyException e) {
+            logger.log(e.getMessage());
             JOptionPane.showMessageDialog(null,
                     e.getMessage(),
                     "FAILED!",
                     JOptionPane.ERROR_MESSAGE);
             return;
         } catch (Exception e) {
+            logger.log("Error occurred: " + e.getMessage());
             JOptionPane.showMessageDialog(null,
                     "Please enter data in right format.",
                     "ERROR!",
@@ -159,14 +173,14 @@ public class DamageEntryUI extends javax.swing.JFrame {
 
         aDamage.setOperationDate(jDateChooser1);
 
-        // Get the instance of Shop using the Singleton pattern
-Shop shop = Shop.getInstance();
+
+        
 
 // Check if aDamage has a valid product
 if (aDamage.getProduct() != null) {
     // Add the damage to the Shop instance
-    String msg = shop.addDamage(aDamage);
-    
+    String msg = shopWithLogger.addDamage(aDamage);
+    logger.log(msg);
     // Update the product list combo box
     populateProductListComboBox();
     
@@ -187,7 +201,7 @@ if (aDamage.getProduct() != null) {
 
     public void populateProductListComboBox() {
     Shop shop = Shop.getInstance();
-    for (Product aProduct : shop.getProductList()) {
+    for (Product aProduct : shop.getProductList()) { 
         jComboBox1.addItem(aProduct);
     }
 }
