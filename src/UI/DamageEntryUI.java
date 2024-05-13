@@ -5,8 +5,10 @@ import BO.Damage;
 import BO.ILogger;
 import BO.IShop;
 import BO.LoggerDecorator;
+import BO.Observer;
 import BO.Product;
 import BO.Shop;
+import BO.Subject;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -27,10 +29,10 @@ public class DamageEntryUI extends javax.swing.JFrame {
         populateProductListComboBox();
     }
     private void initializeLogger() {
-        logger = new ConsoleLogger();
-
         IShop shop = Shop.getInstance();
+        logger = new ConsoleLogger((Subject) shop);
         shopWithLogger = new LoggerDecorator(shop, logger);
+        ((Subject) shop).registerObserver((Observer) logger);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

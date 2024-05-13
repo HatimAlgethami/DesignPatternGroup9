@@ -7,6 +7,7 @@ import BO.LoggerDecorator;
 import BO.Product;
 import BO.Purchase;
 import BO.Shop;
+import BO.Subject;
 import com.toedter.calendar.JTextFieldDateEditor;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -27,9 +28,8 @@ public class PurchaseUI extends javax.swing.JFrame {
         populateProductListComboBox();
     }
     private void initializeLogger() {
-        logger = new ConsoleLogger();
-
         IShop shop = Shop.getInstance();
+        logger = new ConsoleLogger((Subject) shop);
         shopWithLogger = new LoggerDecorator(shop, logger);
     }
     @SuppressWarnings("unchecked")

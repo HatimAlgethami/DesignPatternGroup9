@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import com.toedter.calendar.JDateChooser;
 
-public class Shop implements IShop, Cloneable {
+public class Shop implements IShop,Subject, Cloneable {
     private List<Product> productList;
     private List<Purchase> purchaseList;
     private List<Sale> salesList;
     private List<Damage> damageList;
     private static Shop instance;
+    private List<Observer> observers;
+
 
     private Shop() {
         productList = new ArrayList<>();
         purchaseList = new ArrayList<>();
         salesList = new ArrayList<>();
         damageList = new ArrayList<>();
+        observers = new ArrayList<>();
     }
 
     public static Shop getInstance() {
@@ -36,6 +39,12 @@ public class Shop implements IShop, Cloneable {
 
     @Override
     public String enlistProduct(Product aProduct) {
+    productList.add(aProduct);
+    return "Product is enlisted.";
+    }
+/*
+    @Override
+    public String enlistProduct(Product aProduct) {
         for (Product product1 : productList) {
             if (product1.getCode().equals(aProduct.getCode())) {
                 return "This product code is already enlisted.";
@@ -47,7 +56,7 @@ public class Shop implements IShop, Cloneable {
         productList.add(aProduct);
         return "Product is enlisted.";
     }
-
+*/
     @Override
     public String addSale(Sale aSale) {
         for (Product aProduct : productList) {
@@ -75,7 +84,7 @@ public class Shop implements IShop, Cloneable {
         purchaseList.add(aPurchase);
         return "Purchase has been updated.";
     }
-
+/* // Before Observer Design Pattern
     @Override
     public String addDamage(Damage aDamage) {
         for (Product aProduct : productList) {
@@ -90,6 +99,32 @@ public class Shop implements IShop, Cloneable {
         damageList.add(aDamage);
         return "Damage has been updated.";
     }
+    */
+    // 
+    @Override
+    public String addDamage(Damage aDamage) {
+    boolean damageAdded = false;
+    for (Product aProduct : productList) {
+        if (aProduct.getCode().equals(aDamage.getProduct().getCode())) {
+            if (aProduct.getTotalQuantity() >= aDamage.getTransactionQuantity()) {
+                aProduct.setTotalQuantity(aProduct.getTotalQuantity() - aDamage.getTransactionQuantity());
+                damageAdded = true;
+                break; // Exit the loop since damage is added
+            } else {
+                return "Damage quantity can't exceed total quantity.";
+            }
+        }
+    }
+
+    if (damageAdded) {
+        damageList.add(aDamage);
+        notifyObservers("Damage added (Observer): " + aDamage.getCause()); // Notify observers about the added damage
+        return "Damage has been updated.";
+    } else {
+        return "Product not found or damage not added.";
+    }
+}
+  
     
     public List<Sale> getSalesOfADate(JDateChooser jDateChooser) {
         List<Sale> salesOfADate = new ArrayList<Sale>();
@@ -133,5 +168,27 @@ public class Shop implements IShop, Cloneable {
     @Override
     public Shop clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("Cloning is not supported for singleton objects.");
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+
+    @Override
+    public void executeCommand(Command command) {
+        command.execute();
     }
 }
